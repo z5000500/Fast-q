@@ -132,9 +132,3 @@ fast_q/
         └── types/
 ```
 
-## Demo Accounts (after running seed.sql)
-
-| Email | Password |
-|-------|----------|
-| demo@quizcraft.com | password123 |
-| alice@quizcraft.com | password123 |
