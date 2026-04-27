@@ -1,4 +1,4 @@
-# QuizCraft (fast_q)
+# (fast_q)
 
 A full-stack quiz platform for creating, sharing, and taking interactive quizzes with real-time features.
 
