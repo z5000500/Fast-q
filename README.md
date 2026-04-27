@@ -1,4 +1,4 @@
-# QuizCraft (fast_q)
+# (fast_q)
 
 A full-stack quiz platform for creating, sharing, and taking interactive quizzes with real-time features.
 
@@ -132,9 +132,3 @@ fast_q/
         └── types/
 ```
 
-## Demo Accounts (after running seed.sql)
-
-| Email | Password |
-|-------|----------|
-| demo@quizcraft.com | password123 |
-| alice@quizcraft.com | password123 |
