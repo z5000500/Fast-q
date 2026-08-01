@@ -1,7 +1,9 @@
 FROM php:8.2-apache
 
-# PDO MySQL extension
-RUN docker-php-ext-install pdo pdo_mysql
+# Tools Composer needs to install packages, plus the PDO MySQL extension
+RUN apt-get update && apt-get install -y --no-install-recommends git unzip libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql zip \
+    && rm -rf /var/lib/apt/lists/*
 
 # Apache: serve from /public and allow .htaccess rewrites
 RUN a2enmod rewrite
