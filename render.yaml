@@ -1,0 +1,53 @@
+services:
+  # PHP REST API
+  - type: web
+    name: fastq-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: ./api
+    envVars:
+      - key: JWT_SECRET
+        sync: false # set manually - must match fastq-realtime's JWT_SECRET exactly
+      - key: JWT_ACCESS_LIFETIME
+        value: 900
+      - key: JWT_REFRESH_LIFETIME
+        value: 604800
+      - key: DB_HOST
+        sync: false # from your Aiven MySQL service overview
+      - key: DB_PORT
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: FRONTEND_URL
+        sync: false # e.g. https://your-app.vercel.app
+
+  # Node.js + Socket.io realtime service
+  - type: web
+    name: fastq-realtime
+    runtime: node
+    plan: free
+    rootDir: realtime
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: JWT_SECRET
+        sync: false # must match fastq-api's JWT_SECRET exactly
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: FRONTEND_URL
+        sync: false # e.g. https://your-app.vercel.app
+      - key: REALTIME_PORT
+        value: 3001

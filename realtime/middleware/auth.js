@@ -1,6 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = () => process.env.JWT_SECRET || 'change-me-in-production';
+const JWT_SECRET = () => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret === 'change-me-to-a-strong-random-secret-in-production') {
+    throw new Error(
+      'JWT_SECRET is not set. Refusing to verify tokens with a missing or default secret.'
+    );
+  }
+  return secret;
+};
 
 /**
  * Verify a JWT access token and return the decoded payload.

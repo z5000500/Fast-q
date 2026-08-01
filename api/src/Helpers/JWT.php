@@ -12,7 +12,15 @@ class JWT
 {
     private static function secret(): string
     {
-        return $_ENV['JWT_SECRET'] ?? 'change-me-in-production';
+        $secret = $_ENV['JWT_SECRET'] ?? '';
+
+        if ($secret === '' || $secret === 'change-me-to-a-strong-random-secret-in-production') {
+            throw new \RuntimeException(
+                'JWT_SECRET is not set. Refusing to sign/verify tokens with a missing or default secret.'
+            );
+        }
+
+        return $secret;
     }
 
     public static function createAccessToken(array $user): string

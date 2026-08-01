@@ -22,12 +22,22 @@ class Database
 
             $dsn = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
 
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ];
+
+            // Managed providers like Aiven require TLS. Set DB_SSL_CA to the path of the
+            // downloaded CA certificate to enable it; unset (default) leaves local dev untouched.
+            $sslCa = $_ENV['DB_SSL_CA'] ?? null;
+            if ($sslCa) {
+                $options[PDO::MYSQL_ATTR_SSL_CA] = $sslCa;
+                $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+            }
+
             try {
-                self::$instance = new PDO($dsn, $user, $pass, [
-                    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES   => false,
-                ]);
+                self::$instance = new PDO($dsn, $user, $pass, $options);
             } catch (PDOException $e) {
                 http_response_code(500);
                 echo json_encode(['error' => 'Database connection failed']);

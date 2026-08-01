@@ -1,4 +1,7 @@
-const API_BASE = '/api';
+// In local dev this stays '/api' and Vite's dev-server proxy forwards it to the PHP API.
+// In production there's no such proxy, so set VITE_API_URL to the deployed API's base URL,
+// e.g. https://fastq-api.onrender.com -- the app will call `${VITE_API_URL}/api/...`.
+const API_BASE = `${import.meta.env.VITE_API_URL || ''}/api`;
 
 let accessToken: string | null = null;
 let refreshPromise: Promise<string | null> | null = null;

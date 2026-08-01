@@ -1,0 +1,25 @@
+# Environment
+.env
+.env.local
+
+# PHP
+api/vendor/
+
+# Node
+realtime/node_modules/
+frontend/node_modules/
+frontend/dist/
+npm-debug.log*
+
+# Third-party tools that shouldn't be vendored into the repo
+phpMyAdmin-5.2.3-all-languages/
+
+# Local dev script state
+scripts/.pids/
+scripts/logs/
+*.log
+
+# OS / editor cruft
+.DS_Store
+.vscode/
+.idea/

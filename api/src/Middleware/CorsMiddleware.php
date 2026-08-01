@@ -8,9 +8,19 @@ class CorsMiddleware
 {
     public static function handle(): void
     {
-        $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+        $requestOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-        header("Access-Control-Allow-Origin: {$origin}");
+        // Comma-separated list of allowed origins, e.g. "https://fastq.vercel.app,http://localhost:8080"
+        $allowedOrigins = array_filter(array_map(
+            'trim',
+            explode(',', $_ENV['FRONTEND_URL'] ?? 'http://localhost:8080')
+        ));
+
+        if (in_array($requestOrigin, $allowedOrigins, true)) {
+            header("Access-Control-Allow-Origin: {$requestOrigin}");
+            header('Vary: Origin');
+        }
+
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
         header('Access-Control-Allow-Credentials: true');
